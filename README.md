@@ -1,4 +1,4 @@
-[![CASHEWS Logo](assets/cashews_logo.pdf)
+![CASHEWS Logo](assets/cashews_logo.svg)
 # CASHEWS
 
 This repository contains code for processing the CASSANDRA project's data which aims to create a real-time alarm system
