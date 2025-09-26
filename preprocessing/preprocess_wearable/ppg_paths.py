@@ -1,0 +1,5 @@
+RAW_PPG_PATH = "/sc-projects/sc-proj-cc08-cassandra/device_hub_export_V2/ppg_no_cutoff_UTC"
+CLEANED_PPG_BASE_PATH = "/sc-projects/sc-proj-cc08-cassandra/Prospective_Preprocessed/ppg_cleaned"
+PPG_FEATURES_BASE_PATH = "/sc-projects/sc-proj-cc08-cassandra/Prospective_Preprocessed/ppg_features"
+PPG_EMBEDDINGS_BASE_PATH = "/sc-projects/sc-proj-cc08-cassandra/Prospective_Preprocessed/ppg_embeddings"
+CONFIG_PATH = "/home/vandewrp/projects/hpc-cassandra-analysis/config.yaml"

@@ -1,0 +1,17 @@
+_target_: preprocessing.preprocess_wearable.embedding.models.TCNAE.TCNAE
+ts_dimension: 1
+dilations: 64
+nb_filters: 64
+kernel_size: 16
+padding: "same"
+dropout_rate: 0.05
+filters_conv1d: 4
+activation_conv1d: "linear"
+latent_sample_rate: 16
+pooler:
+  _target_: torch.nn.MaxPool1d
+  kernel_size: ${model.latent_sample_rate}
+  stride:
+  padding: 0
+conv_kernel_init: "xavier_normal"
+use_norm: "weight_norm"

@@ -1,0 +1,83 @@
+defaults:
+  - _self_
+
+root: "/sc-projects/sc-proj-cc08-cassandra/"
+default_complication_types: ['SSI-3', 'POPF', 'Galleleck/BDA']
+
+ishmed_folder: "${root}Prospective_Preprocessed/ishmed/"
+copra_folder: "${root}Prospective_Preprocessed/copra6/"
+redcap_folder: "${root}Prospective_Preprocessed/redcap/"
+
+wearable_stats_path: "${root}Prospective_Preprocessed/patient_summaries_new.parquet"
+
+base_data:
+  root: "${root}Base_data/"
+  filename: "base_data_20250702_2116.csv" #"base_data_20250616_1609.csv"
+  path: "${root}Base_data/${base_data.filename}"
+
+timelines_path: "${root}Base_data/timelines_intervals_20250702_2214.parquet"#timelines_intervals_20250616_0021.parquet"
+transfer_path: "${root}Base_data/transfer_times_20250702_2214.parquet"#patient_start_end_UTC_20250615_2239.parquet"
+
+clinical_notes:
+  root: "${base_data.root}"
+  path: "${clinical_notes.root}/clinical_notes_processed_with_range.parquet"
+  embeddings_file: "${root}/temp_hpc_transfer/_clinical_notes_2025-07-30_17-45_dims_64_debug_False.parquet"#"${root}/temp_hpc_transfer/notes_embeddings_medbertde_2025-06-23_17-22.parquet"#notes_embeddings_medbertde_2025-01-24_14-05.parquet"
+  medical_abbreviations: "${root}temp_hpc_transfer/medical_abbreviations.csv"
+  last_names_combined: "${root}temp_hpc_transfer/last_names_combined.csv"
+
+embeddings:
+  ward_medications: "${base_data.root}/medication_on_ward.csv"
+  icu_medications: "${copra_folder}medication.parquet"
+  icu_fluids: "${copra_folder}fluid_balance_extended.parquet"
+  notes: "${base_data.root}/clinical_notes_processed_with_range.parquet"
+  processed:
+    medications: "${root}temp_hpc_transfer/notes_embeddings_medications_2025-07-27_04-28_debug_False.parquet"
+    notes: "${root}/temp_hpc_transfer/_clinical_notes_2025-07-30_17-45_dims_64_debug_False.parquet"
+  numpy_embeddings:
+    medications: "${root}temp_hpc_transfer/medications_embeddings_2025-07-27_04-28_debug_False.npy"
+    notes: "${root}temp_hpc_transfer/_clinical_notes_2025-07-30_17-45_dims_64_debug_False.npy"
+
+med_embeddings:
+  ishmed_folder: "${root}Prospective_Preprocessed/ward_medications/"
+  copra_folder: "${root}Prospective_Preprocessed/copra6/"
+
+interval_dates:
+  complication_paths:
+    lab_set: "${root}Base_data/endpoints/endpoints_final/comp_lab_set_20250521.parquet"
+    real_life_set: "${root}Base_data/endpoints/endpoints_final/comp_real_life_set_20250521.parquet" # now includes all endpoints
+
+wearable_features:
+  root: "${root}Prospective_Preprocessed/"
+  ppg_root: "${wearable_features.root}ppg_features/"
+  ppg_red: "${wearable_features.ppg_root}/2025-06-17_minor-segment-5m_corsanov2-red-light_kubios-fs_aligned"
+  ppg_green: "${wearable_features.ppg_root}/2025-06-17_minor-segment-5m_corsanov2-green-light_kubios-fs_aligned"
+  ppg_infrared: "${wearable_features.ppg_root}/2025-06-17_minor-segment-5m_corsanov2-infrared-light_kubios-fs_aligned"
+  ppg_minirocket_embeddings: "${wearable_features.root}ppg_embeddings/2025-06-18_MINIROCKET" #"${wearable_features.root}ppg_embeddings/2025-02-17_TCNAE_segments-minor-5m-major-30m/"
+
+dataloader:
+  folders:
+    core: "${root}device_hub_export_V2/core_no_cutoff_UTC/"
+    activity: "${root}device_hub_export_V2/activity_no_cutoff_UTC/"
+    ppg_features: "${wearable_features.ppg_infrared}"
+    ppg_embeddings: "${wearable_features.ppg_minirocket_embeddings}"
+    ppg: "${root}device_hub_export_V2/ppg_no_cutoff_UTC"
+
+segment:
+  default_cohort: "normal_ward" #"normal_ward" # "ICU_and_normal_ward" # "normal_ward" "ICU" "ICU_and_normal_ward"
+  segment_length_hours: 0.5
+  horizon_hours: 6
+  debug: false
+  min_stay_hours: 0
+  exclude_ids: []
+  paths:
+    endpoints_folder: "${root}Prospective_Preprocessed/endpoints/"
+    patient_details: "${ishmed_folder}patient_details.parquet"
+    case: "${ishmed_folder}case_reduced.parquet"
+    lab_numeric: "${ishmed_folder}lab_numeric.parquet"
+    procedure: "${ishmed_folder}procedure.parquet"
+    observations: "${copra_folder}observations.parquet"
+    fluid_balance: "${copra_folder}fluid_balance.parquet"
+    fluid_balance_extended: "${copra_folder}fluid_balance_extended_ATC.parquet"
+    fluid_balance_embeddings: "${copra_folder}fluid_balance_embeddings.parquet"
+    scores: "${copra_folder}scores.parquet"
+    register_export: "${segment.paths.endpoints_folder}register.parquet"

@@ -1,0 +1,34 @@
+defaults:
+  - _self_
+  - model: tcnae
+
+ppg_folder: "2025-01-14_gap-60s_corsanov2-infrared-light"
+
+# Train parameters
+train:
+  epochs: 5
+  batch_size: 64
+  test_batch_size: 128
+  lr: 0.0001
+  lr_schedule: false
+
+data:
+  window_size: 1920
+  stride: 960
+  patient_subset: 0.097
+  train_fraction: 0.8
+  undersample_n:
+
+# Other
+wandb:
+  disabled: False
+  name:
+seed: 42
+
+hydra:
+  output_subdir: null
+  run:
+    dir: . #/outputs/${now:%Y-%m-%d_%H-%M-%S}/
+  sweep:
+    dir: sweep/${now:%Y-%m-%d}/${now:%H-%M-%S}/
+    subdir: ${hydra.job.num}

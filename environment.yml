@@ -1,0 +1,9 @@
+name: cass_pipeline
+channels:
+  - conda-forge
+  - anaconda
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - -r requirements.txt

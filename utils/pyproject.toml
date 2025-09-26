@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools >= 69.0", "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cass_utils"
+version = "0.1.0"
+description = "Utils for cassandra"
+
+dependencies = ["pandas>=2.0.0", "tsfresh>=0.20"]

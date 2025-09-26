@@ -1,0 +1,20 @@
+_target_: preprocessing.preprocess_wearable.embedding.models.LAAE.LAAE
+encoder:
+  _target_: preprocessing.preprocess_wearable.embedding.models.LAAE.LSTMEncoder
+  input_size: 1
+  hidden_size: 32
+  dropout: 0.2
+  attention: True
+  attention_dropout: 0.15
+  num_layers: 1
+  bilstm: True
+  num_heads: 4
+  sparse: True
+decoder:
+  _target_: preprocessing.preprocess_wearable.embedding.models.LAAE.LSTMDecoder
+  hidden_size_encoder: ${model.encoder.hidden_size}
+  bilstm: ${model.encoder.bilstm}
+  hidden_size: 48
+  dropout: 0.1
+  num_layers: 1
+  output_size: 1
